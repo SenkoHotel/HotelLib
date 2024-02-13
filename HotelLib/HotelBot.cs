@@ -23,7 +23,7 @@ public class HotelBot
         {
             Token = token,
             TokenType = TokenType.Bot,
-            Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildMembers | DiscordIntents.GuildPresences,
+            Intents = DiscordIntents.All,
             AutoReconnect = true,
             MinimumLogLevel = LogLevel.None
         });
