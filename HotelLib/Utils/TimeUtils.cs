@@ -4,8 +4,6 @@ public static class TimeUtils
 {
     public static string Format(double time)
     {
-        time /= 1000f;
-
         if (time < 0)
             time = Math.Abs(time);
 
