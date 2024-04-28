@@ -86,7 +86,17 @@ public static class DiscordInteractionExtensions
 
     public static bool? GetBool(this DiscordInteraction interaction, string name)
     {
-        return interaction.Data?.Options?.Where(option => option.Name == name).Select(option => option.Value).FirstOrDefault() as bool?;
+        var option = interaction.getOptions()?.Where(option => option.Name == name).Select(option => option.Value).FirstOrDefault();
+
+        if (option is null)
+            return null;
+
+        return option switch
+        {
+            bool b => b,
+            string s => bool.TryParse(s, out var b) && b,
+            _ => null
+        };
     }
 
     public static async Task<DiscordUser?> GetUser(this DiscordInteraction interaction, string name)
