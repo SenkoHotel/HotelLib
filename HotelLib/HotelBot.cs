@@ -43,6 +43,9 @@ public class HotelBot
 
     public async Task Start()
     {
+        if (!Commands.Any(c => c is SayCommand))
+            Commands.Add(new SayCommand());
+
         await Client.ConnectAsync();
         await Task.Delay(-1);
     }
@@ -51,11 +54,9 @@ public class HotelBot
     {
         Logger.Log($"Logged in as {Client.CurrentUser.Username}#{Client.CurrentUser.Discriminator}");
 
-        var cmds = Commands.ToList();
-        cmds.Add(new SayCommand());
-        cmds.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+        Commands.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
 
-        var registeredCommands = cmds.Select(command =>
+        var registeredCommands = Commands.Select(command =>
         {
             Logger.Log($"Registering command /{command.Name}");
             return command.Build();
