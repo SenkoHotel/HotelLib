@@ -1,6 +1,8 @@
 ﻿using DSharpPlus;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using HotelLib.Commands;
+using HotelLib.Commands.Defaults;
 using HotelLib.Logging;
 using HotelLib.Utils;
 using Newtonsoft.Json;
@@ -12,6 +14,7 @@ public class HotelBot
 {
     internal static HotelBot? Instance { get; private set; }
 
+    public DiscordColor AccentColor { get; init; } = DiscordColor.White;
     public List<SlashCommand> Commands { get; init; } = new();
     public DiscordClient Client { get; }
 
@@ -48,7 +51,11 @@ public class HotelBot
     {
         Logger.Log($"Logged in as {Client.CurrentUser.Username}#{Client.CurrentUser.Discriminator}");
 
-        var registeredCommands = Commands.Select(command =>
+        var cmds = Commands.ToList();
+        cmds.Add(new SayCommand());
+        cmds.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+
+        var registeredCommands = cmds.Select(command =>
         {
             Logger.Log($"Registering command /{command.Name}");
             return command.Build();
