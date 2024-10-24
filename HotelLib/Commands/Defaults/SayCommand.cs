@@ -11,6 +11,13 @@ public class SayCommand : SlashCommand
     public override string Description => "Sends a message in a channel.";
     public override Permissions? Permission => Permissions.ManageMessages;
 
+    public override List<SlashOption> Options => new()
+    {
+        new SlashOption("content", "The message to send.", ApplicationCommandOptionType.String, true),
+        new SlashOption("channel", "The channel to send the message in.", ApplicationCommandOptionType.Channel, false),
+        new SlashOption("reply", "The message to reply to. (Message ID)", ApplicationCommandOptionType.String, false)
+    };
+
     public override async void Handle(HotelBot bot, DiscordInteraction interaction)
     {
         try
