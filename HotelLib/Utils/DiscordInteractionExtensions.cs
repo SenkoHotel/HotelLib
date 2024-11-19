@@ -7,28 +7,45 @@ public static class DiscordInteractionExtensions
 {
     #region Reply
 
-    public static void ReplyEmbed(this DiscordInteraction interaction, DiscordEmbedBuilder embed, bool ephemeral = false)
+    public static async Task ReplyEmbed(this DiscordInteraction interaction, DiscordEmbedBuilder embed, bool ephemeral = false)
     {
-        interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder
+        await interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder
         {
             IsEphemeral = ephemeral
         }.AddEmbed(embed.Build()));
     }
 
-    public static void Reply(this DiscordInteraction interaction, string content, bool ephemeral = false)
+    public static async Task Reply(this DiscordInteraction interaction, string content, bool ephemeral = false)
     {
-        interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder
+        await interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder
         {
             IsEphemeral = ephemeral,
             Content = content
         });
     }
 
-    public static void ReplyAutoComplete(this DiscordInteraction interaction, List<DiscordAutoCompleteChoice> choices)
+    public static async Task ReplyAutoComplete(this DiscordInteraction interaction, List<DiscordAutoCompleteChoice> choices)
     {
         var response = new DiscordInteractionResponseBuilder();
         response.AddAutoCompleteChoices(choices);
-        interaction.CreateResponseAsync(InteractionResponseType.AutoCompleteResult, response);
+        await interaction.CreateResponseAsync(InteractionResponseType.AutoCompleteResult, response);
+    }
+
+    #endregion
+
+    #region Update
+
+    public static async Task UpdateMessage(this DiscordInteraction interaction, string content)
+    {
+        await interaction.EditOriginalResponseAsync(new DiscordWebhookBuilder
+        {
+            Content = content
+        });
+    }
+
+    public static async Task UpdateEmbed(this DiscordInteraction interaction, DiscordEmbedBuilder embed)
+    {
+        await interaction.EditOriginalResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
     }
 
     #endregion
@@ -52,17 +69,17 @@ public static class DiscordInteractionExtensions
 
     #region Followup
 
-    public static void FollowupEmbed(this DiscordInteraction interaction, DiscordEmbedBuilder embed, bool ephemeral = false)
+    public static async Task FollowupEmbed(this DiscordInteraction interaction, DiscordEmbedBuilder embed, bool ephemeral = false)
     {
-        interaction.CreateFollowupMessageAsync(new DiscordFollowupMessageBuilder
+        await interaction.CreateFollowupMessageAsync(new DiscordFollowupMessageBuilder
         {
             IsEphemeral = ephemeral
         }.AddEmbed(embed.Build()));
     }
 
-    public static void Followup(this DiscordInteraction interaction, string content, bool ephemeral = false)
+    public static async Task Followup(this DiscordInteraction interaction, string content, bool ephemeral = false)
     {
-        interaction.CreateFollowupMessageAsync(new DiscordFollowupMessageBuilder
+        await interaction.CreateFollowupMessageAsync(new DiscordFollowupMessageBuilder
         {
             IsEphemeral = ephemeral,
             Content = content

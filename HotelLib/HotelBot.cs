@@ -18,7 +18,7 @@ public class HotelBot
     public List<SlashCommand> Commands { get; init; } = new();
     public DiscordClient Client { get; }
 
-    public HotelBot(string token)
+    public HotelBot(string token, Action<DiscordClient>? beforeStart = null)
     {
         Instance = this;
 
@@ -30,6 +30,8 @@ public class HotelBot
             AutoReconnect = true,
             MinimumLogLevel = LogLevel.None
         });
+
+        beforeStart?.Invoke(Client);
 
         Client.Ready += onReady;
         Client.InteractionCreated += onInteract;
