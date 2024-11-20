@@ -18,7 +18,7 @@ public class SayCommand : SlashCommand
         new SlashOption("reply", "The message to reply to. (Message ID)", ApplicationCommandOptionType.String, false)
     };
 
-    public override async void Handle(HotelBot bot, DiscordInteraction interaction)
+    public override async Task Handle(HotelBot bot, DiscordInteraction interaction)
     {
         try
         {
@@ -28,7 +28,7 @@ public class SayCommand : SlashCommand
 
             if (content == null || string.IsNullOrWhiteSpace(content))
             {
-                interaction.Reply("You must provide a message to send.", true);
+                await interaction.Reply("You must provide a message to send.", true);
                 return;
             }
 
@@ -38,7 +38,7 @@ public class SayCommand : SlashCommand
             {
                 if (!ulong.TryParse(replyString, out var reply))
                 {
-                    interaction.Reply("You must provide a valid message ID to reply to.", true);
+                    await interaction.Reply("You must provide a valid message ID to reply to.", true);
                     return;
                 }
 
@@ -46,7 +46,7 @@ public class SayCommand : SlashCommand
 
                 if (messageToReplyTo == null)
                 {
-                    interaction.Reply("I couldn't find that message.", true);
+                    await interaction.Reply("I couldn't find that message.", true);
                     return;
                 }
 
@@ -54,7 +54,7 @@ public class SayCommand : SlashCommand
             }
 
             var message = await channel.SendMessageAsync(msg);
-            interaction.Reply("Message sent!", true);
+            await interaction.Reply("Message sent!", true);
 
             const ulong channelid = 880455708729032864;
             var loggingChannel = interaction.Guild.GetChannel(channelid);
@@ -99,7 +99,7 @@ public class SayCommand : SlashCommand
                 error.AddField("Stack Trace", $"```cs\n{stackTraceString}```");
             }
 
-            interaction.ReplyEmbed(error, true);
+            await interaction.ReplyEmbed(error, true);
         }
     }
 }

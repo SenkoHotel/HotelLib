@@ -69,7 +69,7 @@ public class HotelBot
         return Task.CompletedTask;
     }
 
-    private Task onInteract(DiscordClient sender, InteractionCreateEventArgs args)
+    private async Task onInteract(DiscordClient sender, InteractionCreateEventArgs args)
     {
         var interaction = args.Interaction;
         var command = Commands.FirstOrDefault(x => x.Name == interaction.Data.Name);
@@ -77,18 +77,16 @@ public class HotelBot
         if (command == null)
         {
             Logger.Log($"Command {interaction.Data.Name} not found.", Logging.LogLevel.Warning);
-            return Task.CompletedTask;
+            return;
         }
 
         try
         {
-            command.Handle(this, interaction);
+            await command.Handle(this, interaction);
         }
         catch (Exception e)
         {
             Logger.Log($"Error while handling command {interaction.Data.Name}: {e.Message}", Logging.LogLevel.Error);
         }
-
-        return Task.CompletedTask;
     }
 }

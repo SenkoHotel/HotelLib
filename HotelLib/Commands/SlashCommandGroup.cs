@@ -14,7 +14,7 @@ public abstract class SlashCommandGroup : SlashCommand
         Options.AddRange(SubCommands.Select(x => new SlashOption(x.Name, x.Description, ApplicationCommandOptionType.SubCommand, true)));
     }
 
-    public override void Handle(HotelBot bot, DiscordInteraction interaction)
+    public override async Task Handle(HotelBot bot, DiscordInteraction interaction)
     {
         var option = interaction.Data.Options.First();
         var subcommand = option.Name;
@@ -29,10 +29,10 @@ public abstract class SlashCommandGroup : SlashCommand
 
         if (command is null)
         {
-            interaction.Reply("Subcommand not found.", true);
+            await interaction.Reply("Subcommand not found.", true);
             return;
         }
 
-        command.Handle(bot, interaction);
+        await command.Handle(bot, interaction);
     }
 }

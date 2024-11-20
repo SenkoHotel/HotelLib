@@ -10,5 +10,5 @@ public abstract class SlashCommand
     public virtual Permissions? Permission => null;
     public virtual List<SlashOption> Options { get; } = new();
 
-    public abstract void Handle(HotelBot bot, DiscordInteraction interaction);
+    public abstract Task Handle(HotelBot bot, DiscordInteraction interaction);
 }
