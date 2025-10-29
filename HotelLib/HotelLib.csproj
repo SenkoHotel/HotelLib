@@ -9,6 +9,7 @@
     <ItemGroup>
       <PackageReference Include="DSharpPlus" Version="4.4.6" />
       <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+      <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
     </ItemGroup>
 
 </Project>

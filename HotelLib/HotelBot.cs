@@ -18,9 +18,11 @@ public class HotelBot
     public List<SlashCommand> Commands { get; init; } = new();
     public DiscordClient Client { get; }
 
-    public HotelBot(string token, Action<DiscordClient>? beforeStart = null)
+    public HotelBot(Action<DiscordClient>? beforeStart = null)
     {
         Instance = this;
+
+        var token = Environment.GetEnvironmentVariable("TOKEN") ?? throw new Exception("Missing token envvar.");
 
         Client = new DiscordClient(new DiscordConfiguration
         {
